@@ -1,8 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useAtomSet } from "@effect-atom/atom-react";
-import { Cause, Exit, Option } from "effect";
 import { toast } from "sonner";
 
 import type { User } from "@/app/schema/user-schema";

@@ -1,7 +1,6 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { Result, useAtomValue } from "@effect-atom/atom-react";
 
 
 import { UserDetailsCard } from "@/components/user-details-card";

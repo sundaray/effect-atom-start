@@ -2,9 +2,7 @@
 
 import { startTransition, useId, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAtomSet } from "@effect-atom/atom-react";
 import { effectTsResolver } from "@hookform/resolvers/effect-ts";
-import { Cause, Exit, Option } from "effect";
 import { useForm } from "react-hook-form";
 import { useProgress } from "react-transition-progress";
 import { toast } from "sonner";
