@@ -1,20 +1,31 @@
-import { Suspense } from "react";
+"use client";
 
+import { useAtomRefresh, useAtomSuspense } from "@effect-atom/atom-react";
+import { Cause } from "effect";
 
-import { UserEmptyCard } from "@/components/user-empty-card";
-import { UserGridSpinner } from "@/components/user-grid-spinner";
+import { usersAtom } from "@/app/atoms/users";
+
+import { FailureCard } from "@/components/failure-card";
 import { UserSuccessCard } from "@/components/user-success-card";
 
-function UsergridContent() {
-
-
-  return <h1>User Grid</h1>
-}
+import { getErrorInfo } from "@/lib/utils";
 
 export function UserGridSuspense() {
+  const result = useAtomSuspense(usersAtom, { includeFailure: true });
+  const refresh = useAtomRefresh(usersAtom);
+
+  if (result._tag === "Failure") {
+    const error = Cause.squash(result.cause);
+    const { title, message } = getErrorInfo(error);
+
+    return <FailureCard title={title} message={message} onRetry={refresh} />;
+  }
+
   return (
-    <Suspense fallback={<UserGridSpinner />}>
-      <UsergridContent />
-    </Suspense>
+    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      {result.value.map((user) => (
+        <UserSuccessCard key={user.id} user={user} />
+      ))}
+    </div>
   );
 }

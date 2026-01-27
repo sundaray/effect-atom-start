@@ -1,4 +1,5 @@
 import { Icons } from "@/components/icons";
+import { Button } from "@/components/ui/button";
 import {
   Empty,
   EmptyDescription,
@@ -10,9 +11,10 @@ import {
 interface FailureCardProps {
   title: string;
   message: string;
+  onRetry?: () => void;
 }
 
-export function FailureCard({ title, message }: FailureCardProps) {
+export function FailureCard({ title, message, onRetry }: FailureCardProps) {
   return (
     <Empty className="border py-10">
       <EmptyHeader>
@@ -23,6 +25,11 @@ export function FailureCard({ title, message }: FailureCardProps) {
           {title}
         </EmptyTitle>
         <EmptyDescription className="text-sm">{message}</EmptyDescription>
+        {onRetry && (
+          <Button onClick={onRetry} variant="outline" className="mt-4">
+            Try again
+          </Button>
+        )}
       </EmptyHeader>
     </Empty>
   );

@@ -16,19 +16,19 @@ export function UserGrid() {
     .onInitial(() => <UserGridSpinner />)
 
     .onErrorTag("ConfigError", (error) => (
-      <FailureCard title="ConfigError" message={error.message} />
+      <FailureCard title="Configuration Error" message={error.message} />
     ))
 
     .onErrorTag("GetUsersRequestError", (error) => (
-      <FailureCard title="GetUsersRequestError" message={error.message} />
+      <FailureCard title="Connection Failed" message={error.message} />
     ))
 
     .onErrorTag("GetUsersResponseError", (error) => (
-      <FailureCard title="GetUsersResponseError" message={error.message} />
+      <FailureCard title="Server Error" message={error.message} />
     ))
 
     .onErrorTag("GetUsersParseError", (error) => (
-      <FailureCard title="GetUsersParseError" message={error.message} />
+      <FailureCard title="Data Error" message={error.message} />
     ))
 
     .onDefect(() => (

@@ -1,8 +1,10 @@
 "use client";
 
+import { Suspense } from "react";
 import { Link } from "react-transition-progress/next";
 
-import { UserGrid } from "@/components/user-grid";
+import { UserGridSpinner } from "@/components/user-grid-spinner";
+import { UserGridSuspense } from "@/components/user-grid-suspense";
 import { UsersPagination } from "@/components/users-pagination";
 import { UsersSearchBar } from "@/components/users-search-bar";
 
@@ -19,7 +21,9 @@ export default function HomePage() {
         </Link>
       </div>
       <UsersSearchBar />
-      <UserGrid />
+      <Suspense fallback={<UserGridSpinner />}>
+        <UserGridSuspense />
+      </Suspense>
       <UsersPagination />
     </div>
   );

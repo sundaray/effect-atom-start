@@ -26,6 +26,7 @@
     "radix-ui": "^1.4.3",
     "react": "19.2.3",
     "react-dom": "19.2.3",
+    "react-error-boundary": "^6.1.0",
     "react-hook-form": "^7.71.1",
     "react-transition-progress": "^0.0.4",
     "shadcn": "^3.7.0",
