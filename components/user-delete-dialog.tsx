@@ -3,8 +3,6 @@
 import { useState } from "react";
 import { toast } from "sonner";
 
-import type { User } from "@/app/schema/user-schema";
-
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,6 +17,7 @@ import {
 } from "@/components/ui/dialog";
 
 import { useSpinDelay } from "@/hooks/use-spin-delay";
+import type { User } from "@/schema/user-schema";
 
 interface UserDeleteDialogProps {
   user: User;
@@ -43,8 +42,7 @@ export function UserDeleteDialog({ user, trigger }: UserDeleteDialogProps) {
     }
   }
 
-  async function handleDelete() {
-  }
+  async function handleDelete() {}
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>

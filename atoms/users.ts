@@ -1,9 +1,8 @@
 import { Atom } from "@effect-atom/atom-react";
 import { Duration, Effect } from "effect";
 
-import { UsersService } from "@/app/services/user-service";
-
 import { atomRuntime } from "@/atom-runtime";
+import { UsersService } from "@/services/user-service";
 
 const usersResponseAtom = atomRuntime
   .atom(

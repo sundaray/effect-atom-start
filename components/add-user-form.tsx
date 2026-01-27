@@ -8,11 +8,6 @@ import { useProgress } from "react-transition-progress";
 import { toast } from "sonner";
 
 import {
-  AddUserFormSchema,
-  type AddUserFormValues,
-} from "@/app/schema/user-schema";
-
-import {
   FormErrorMessage,
   FormFieldErrorMessage,
 } from "@/components/form-messages";
@@ -23,6 +18,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 import { useSpinDelay } from "@/hooks/use-spin-delay";
+import {
+  AddUserFormSchema,
+  type AddUserFormValues,
+} from "@/schema/user-schema";
 
 export function AddUserForm() {
   const id = useId();
@@ -51,8 +50,7 @@ export function AddUserForm() {
     minDuration: 500,
   });
 
-  const onSubmit = async (data: AddUserFormValues) => {
-  };
+  const onSubmit = async (data: AddUserFormValues) => {};
 
   return (
     <Card>

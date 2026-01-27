@@ -1,10 +1,10 @@
 import Link from "next/link";
 
-import type { User } from "@/app/schema/user-schema";
-
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { UserDeleteDialog } from "@/components/user-delete-dialog";
+
+import type { User } from "@/schema/user-schema";
 
 interface UserSuccessCardProps {
   user: User;

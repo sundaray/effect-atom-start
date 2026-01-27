@@ -3,12 +3,11 @@
 import { useAtomRefresh, useAtomSuspense } from "@effect-atom/atom-react";
 import { Cause } from "effect";
 
-import { usersAtom } from "@/app/atoms/users";
-
 import { FailureCard } from "@/components/failure-card";
 import { UserSuccessCard } from "@/components/user-success-card";
 
 import { getErrorInfo } from "@/lib/utils";
+import { usersAtom } from "@/atoms/users";
 
 export function UserGridSuspense() {
   const result = useAtomSuspense(usersAtom, { includeFailure: true });

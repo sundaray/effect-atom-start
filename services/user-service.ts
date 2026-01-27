@@ -8,15 +8,24 @@ import { Effect } from "effect";
 
 import {
   ConfigError,
+  GetUserError,
+  GetUserParseError,
+  GetUserRequestError,
+  GetUserResponseError,
   GetUsersError,
   GetUsersParseError,
   GetUsersRequestError,
   GetUsersResponseError,
 } from "@/app/errors";
-import { UsersSchema, type UsersResponse } from "@/app/schema/user-schema";
 
 import { apiBaseUrlConfig } from "@/lib/config";
 import { USERS_PER_PAGE } from "@/lib/constants";
+import {
+  UserSchema,
+  UsersSchema,
+  type User,
+  type UsersResponse,
+} from "@/schema/user-schema";
 
 export class UsersService extends Effect.Service<UsersService>()(
   "app/UsersService",
@@ -83,7 +92,39 @@ export class UsersService extends Effect.Service<UsersService>()(
         );
       }
 
-      return { getUsers };
+      // ============ Get User ============
+
+      function getUser(id: string): Effect.Effect<User, GetUserError> {
+        return client.get(`${apiBaseUrl}/users/${id}`).pipe(
+          Effect.delay("1 second"),
+          Effect.flatMap(HttpClientResponse.schemaBodyJson(UserSchema)),
+          Effect.catchTags({
+            RequestError: (err) =>
+              Effect.fail(
+                new GetUserRequestError({
+                  message: `Failed to get user ${id}`,
+                  cause: err,
+                }),
+              ),
+            ResponseError: (err) =>
+              Effect.fail(
+                new GetUserResponseError({
+                  message: `Failed to get user ${id}: status ${err.response.status}`,
+                  cause: err,
+                }),
+              ),
+            ParseError: (err) =>
+              Effect.fail(
+                new GetUserParseError({
+                  message: "Failed to parse getUser response",
+                  cause: err,
+                }),
+              ),
+          }),
+        );
+      }
+
+      return { getUsers, getUser };
     }),
     dependencies: [FetchHttpClient.layer],
     accessors: true,

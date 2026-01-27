@@ -1,6 +1,6 @@
-import type { User } from "@/app/schema/user-schema";
-
 import { Icons } from "@/components/icons";
+
+import type { User } from "@/schema/user-schema";
 
 interface UserDetailsCardProps {
   user: User;
