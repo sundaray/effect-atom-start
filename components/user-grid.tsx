@@ -4,35 +4,50 @@ import { Result, useAtomValue } from "@effect-atom/atom-react";
 
 import { usersAtom } from "@/app/atoms/users";
 
+import { FailureCard } from "@/components/failure-card";
 import { UserEmptyCard } from "@/components/user-empty-card";
-import { UserFailureCard } from "@/components/user-failure-card";
 import { UserGridSpinner } from "@/components/user-grid-spinner";
 import { UserSuccessCard } from "@/components/user-success-card";
 
 export function UserGrid() {
   const usersResult = useAtomValue(usersAtom);
 
-  return Result.match(usersResult, {
-    onInitial: () => <UserGridSpinner />,
+  return Result.builder(usersResult)
+    .onInitial(() => <UserGridSpinner />)
 
-    // 1. Unwrap the failure cause
-    onFailure: (failure) => <UserFailureCard cause={failure.cause} />,
+    .onErrorTag("ConfigError", (error) => (
+      <FailureCard title="ConfigError" message={error.message} />
+    ))
 
-    // 2. Unwrap the success value
-    onSuccess: (success) => {
-      const users = success.value; // <--- Access the data here
+    .onErrorTag("GetUsersRequestError", (error) => (
+      <FailureCard title="GetUsersRequestError" message={error.message} />
+    ))
 
-      if (users.length === 0) {
-        return <UserEmptyCard />;
-      }
+    .onErrorTag("GetUsersResponseError", (error) => (
+      <FailureCard title="GetUsersResponseError" message={error.message} />
+    ))
 
-      return (
+    .onErrorTag("GetUsersParseError", (error) => (
+      <FailureCard title="GetUsersParseError" message={error.message} />
+    ))
+
+    .onDefect(() => (
+      <FailureCard
+        title="Unexpected Error"
+        message="Something went wrong. Please try refreshing the page."
+      />
+    ))
+
+    .onSuccess((users) =>
+      users.length === 0 ? (
+        <UserEmptyCard />
+      ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
           {users.map((user) => (
             <UserSuccessCard key={user.id} user={user} />
           ))}
         </div>
-      );
-    },
-  });
+      ),
+    )
+    .render();
 }

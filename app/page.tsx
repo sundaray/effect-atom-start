@@ -6,7 +6,7 @@ import { UserGrid } from "@/components/user-grid";
 import { UsersPagination } from "@/components/users-pagination";
 import { UsersSearchBar } from "@/components/users-search-bar";
 
-export default function Page() {
+export default function HomePage() {
   return (
     <div className="container max-w-5xl space-y-10">
       <div className="flex items-center justify-between">

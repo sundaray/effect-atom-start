@@ -47,6 +47,7 @@ export class UsersService extends Effect.Service<UsersService>()(
         );
 
         return client.execute(request).pipe(
+          Effect.delay("1 second"),
           Effect.flatMap((response) =>
             Effect.all({
               users: HttpClientResponse.schemaBodyJson(UsersSchema)(response),
