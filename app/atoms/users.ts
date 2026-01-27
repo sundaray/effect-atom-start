@@ -1,8 +1,9 @@
 import { Atom } from "@effect-atom/atom-react";
 import { Effect } from "effect";
 
-import { atomRuntime } from "@/runtime";
-import { UsersService } from "@/app/services/users-service";
+import { UsersService } from "@/app/services/user-service";
+
+import { atomRuntime } from "@/atom-runtime";
 
 const usersResponseAtom = atomRuntime.atom(
   Effect.gen(function* () {
