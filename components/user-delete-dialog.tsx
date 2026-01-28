@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useAtomValue } from "@effect-atom/atom-react";
+import { useAtomSet } from "@effect-atom/atom-react";
 import { Cause, Exit, Option } from "effect";
 import { toast } from "sonner";
 
@@ -45,9 +45,7 @@ export function UserDeleteDialog({ user, trigger }: UserDeleteDialogProps) {
     }
   }
 
-  const deleteUser = useAtomValue(deleteUserAtom);
-
-  const deleteUser = useAtomValue(deleteUserAtom);
+  const deleteUser = useAtomSet(deleteUserAtom, { mode: "promiseExit" });
 
   async function handleDelete() {
     setIsDeleting(true);

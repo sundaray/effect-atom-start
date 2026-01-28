@@ -2,7 +2,9 @@
 
 import { startTransition, useId, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAtomSet } from "@effect-atom/atom-react";
 import { effectTsResolver } from "@hookform/resolvers/effect-ts";
+import { Cause, Exit, Option } from "effect";
 import { useForm } from "react-hook-form";
 import { useProgress } from "react-transition-progress";
 import { toast } from "sonner";
@@ -18,6 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 import { useSpinDelay } from "@/hooks/use-spin-delay";
+import { addUserAtom } from "@/atoms/users";
 import {
   AddUserFormSchema,
   type AddUserFormValues,
@@ -50,8 +53,31 @@ export function AddUserForm() {
     minDuration: 500,
   });
 
-  const onSubmit = async (data: AddUserFormValues) => {};
+  const addUser = useAtomSet(addUserAtom, { mode: "promiseExit" });
 
+  const onSubmit = async (data: AddUserFormValues) => {
+    setGlobalError(null);
+    const exit = await addUser(data);
+
+    if (Exit.isSuccess(exit)) {
+      const user = exit.value;
+
+      toast.success("User Added Successfully", {
+        description: `${user.firstName} ${user.lastName} was added successfully.`,
+      });
+
+      startTransition(() => {
+        startProgress();
+        router.push("/");
+      });
+    } else {
+      const failureOption = Cause.failureOption(exit.cause);
+      const errorMessage = Option.isSome(failureOption)
+        ? failureOption.value.message
+        : "An unexpected error occurred";
+      setGlobalError(errorMessage);
+    }
+  };
   return (
     <Card>
       <CardContent className="mt-4">

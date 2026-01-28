@@ -9,6 +9,11 @@ import { Effect } from "effect";
 import { apiBaseUrlConfig } from "@/lib/config";
 import { USERS_PER_PAGE } from "@/lib/constants";
 import {
+  AddUserBodySerializationError,
+  AddUserError,
+  AddUserParseError,
+  AddUserRequestError,
+  AddUserResponseError,
   ConfigError,
   DeleteUserError,
   DeleteUserRequestError,
@@ -25,6 +30,7 @@ import {
 import {
   UserSchema,
   UsersSchema,
+  type AddUserFormValues,
   type User,
   type UsersResponse,
 } from "@/schema/user-schema";
@@ -152,7 +158,49 @@ export class UsersService extends Effect.Service<UsersService>()(
         );
       }
 
-      return { getUsers, getUser, deleteUser };
+      // ============ Add User ============
+
+      function addUser(
+        user: AddUserFormValues,
+      ): Effect.Effect<User, AddUserError> {
+        return HttpClientRequest.post(`${apiBaseUrl}/users`).pipe(
+          HttpClientRequest.bodyJson(user),
+          Effect.flatMap(client.execute),
+          Effect.flatMap(HttpClientResponse.schemaBodyJson(UserSchema)),
+          Effect.catchTags({
+            HttpBodyError: (err) =>
+              Effect.fail(
+                new AddUserBodySerializationError({
+                  message: "Failed to serialize addUser request body",
+                  cause: err,
+                }),
+              ),
+            RequestError: (err) =>
+              Effect.fail(
+                new AddUserRequestError({
+                  message: "Failed to create user request",
+                  cause: err,
+                }),
+              ),
+            ResponseError: (err) =>
+              Effect.fail(
+                new AddUserResponseError({
+                  message: `Failed to create user: status ${err.response.status}`,
+                  cause: err,
+                }),
+              ),
+            ParseError: (err) =>
+              Effect.fail(
+                new AddUserParseError({
+                  message: "Failed to parse created user response",
+                  cause: err,
+                }),
+              ),
+          }),
+        );
+      }
+
+      return { getUsers, getUser, deleteUser, addUser };
     }),
     dependencies: [FetchHttpClient.layer],
     accessors: true,
