@@ -1,6 +1,51 @@
 {
   "users": [
     {
+      "id": "1",
+      "firstName": "Emily",
+      "lastName": "Johnson",
+      "email": "emily.johnson@example.com",
+      "company": {
+        "name": "Dooley, Kozey and Cronin",
+        "title": "Sales Manager"
+      },
+      "address": {
+        "address": "626 Main Street",
+        "city": "Phoenix",
+        "state": "Mississippi"
+      }
+    },
+    {
+      "id": "2",
+      "firstName": "Michael",
+      "lastName": "Williams",
+      "email": "michael.williams@example.com",
+      "company": {
+        "name": "Spinka - Dickinson",
+        "title": "Support Specialist"
+      },
+      "address": {
+        "address": "385 Fifth Street",
+        "city": "Houston",
+        "state": "Alabama"
+      }
+    },
+    {
+      "id": "3",
+      "firstName": "Sophia",
+      "lastName": "Brown",
+      "email": "sophia.brown@example.com",
+      "company": {
+        "name": "Schiller - Zieme",
+        "title": "Accountant"
+      },
+      "address": {
+        "address": "1642 Ninth Street",
+        "city": "Washington",
+        "state": "Alabama"
+      }
+    },
+    {
       "id": "4",
       "firstName": "James",
       "lastName": "Davis",
@@ -134,21 +179,6 @@
         "city": "Jacksonville",
         "state": "West Virginia"
       }
-    },
-    {
-      "firstName": "Hemanta",
-      "lastName": "Sundaray",
-      "email": "hem@gmail.com",
-      "company": {
-        "name": "Resilient Software",
-        "title": "Software Engineer"
-      },
-      "address": {
-        "address": "AT/PO: Gadamanatir",
-        "city": "Khurda",
-        "state": "Odisha"
-      },
-      "id": "K5RwmYy"
     }
   ]
 }
