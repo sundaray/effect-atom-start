@@ -6,8 +6,13 @@ import {
 } from "@effect/platform";
 import { Effect } from "effect";
 
+import { apiBaseUrlConfig } from "@/lib/config";
+import { USERS_PER_PAGE } from "@/lib/constants";
 import {
   ConfigError,
+  DeleteUserError,
+  DeleteUserRequestError,
+  DeleteUserResponseError,
   GetUserError,
   GetUserParseError,
   GetUserRequestError,
@@ -16,10 +21,7 @@ import {
   GetUsersParseError,
   GetUsersRequestError,
   GetUsersResponseError,
-} from "@/app/errors";
-
-import { apiBaseUrlConfig } from "@/lib/config";
-import { USERS_PER_PAGE } from "@/lib/constants";
+} from "@/errors";
 import {
   UserSchema,
   UsersSchema,
@@ -124,7 +126,33 @@ export class UsersService extends Effect.Service<UsersService>()(
         );
       }
 
-      return { getUsers, getUser };
+      // ============ Delete User ============
+
+      function deleteUser(
+        userId: string,
+      ): Effect.Effect<void, DeleteUserError> {
+        return client.del(`${apiBaseUrl}/users/${userId}`).pipe(
+          Effect.asVoid,
+          Effect.catchTags({
+            RequestError: (requestError) =>
+              Effect.fail(
+                new DeleteUserRequestError({
+                  message: `Failed to delete user ${userId}`,
+                  cause: requestError,
+                }),
+              ),
+            ResponseError: (responseError) =>
+              Effect.fail(
+                new DeleteUserResponseError({
+                  message: `Failed to delete user ${userId}: status ${responseError.response.status}`,
+                  cause: responseError,
+                }),
+              ),
+          }),
+        );
+      }
+
+      return { getUsers, getUser, deleteUser };
     }),
     dependencies: [FetchHttpClient.layer],
     accessors: true,

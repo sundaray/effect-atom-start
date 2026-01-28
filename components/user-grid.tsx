@@ -13,7 +13,8 @@ export function UserGrid() {
   const usersResult = useAtomValue(usersAtom);
 
   return Result.builder(usersResult)
-    .onInitial(() => <UserGridSpinner />)
+
+    .onInitialOrWaiting(() => <UserGridSpinner />)
 
     .onErrorTag("ConfigError", (error) => (
       <FailureCard title="Configuration Error" message={error.message} />

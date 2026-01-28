@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { useAtomValue } from "@effect-atom/atom-react";
+import { Cause, Exit, Option } from "effect";
 import { toast } from "sonner";
 
 import { Icons } from "@/components/icons";
@@ -17,6 +19,7 @@ import {
 } from "@/components/ui/dialog";
 
 import { useSpinDelay } from "@/hooks/use-spin-delay";
+import { deleteUserAtom } from "@/atoms/users";
 import type { User } from "@/schema/user-schema";
 
 interface UserDeleteDialogProps {
@@ -42,8 +45,31 @@ export function UserDeleteDialog({ user, trigger }: UserDeleteDialogProps) {
     }
   }
 
-  async function handleDelete() {}
+  const deleteUser = useAtomValue(deleteUserAtom);
 
+  const deleteUser = useAtomValue(deleteUserAtom);
+
+  async function handleDelete() {
+    setIsDeleting(true);
+    setError(null);
+
+    const exit = await deleteUser(user.id);
+
+    setIsDeleting(false);
+
+    if (Exit.isSuccess(exit)) {
+      setOpen(false);
+      toast.success("User deleted successfully", {
+        description: `${user.firstName} ${user.lastName} has been deleted.`,
+      });
+    } else {
+      const failureOption = Cause.failureOption(exit.cause);
+      const errorMessage = Option.isSome(failureOption)
+        ? failureOption.value.message
+        : "An unexpected error occurred";
+      setError(errorMessage);
+    }
+  }
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
