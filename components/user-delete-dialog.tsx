@@ -46,7 +46,6 @@ export function UserDeleteDialog({ user, trigger }: UserDeleteDialogProps) {
   }
 
   const deleteUser = useAtomSet(deleteUserAtom, { mode: "promiseExit" });
-  const invalidateUsers = useAtomSet(invalidateUsersAtom, { mode: "promise" });
 
   async function handleDelete() {
     setIsDeleting(true);
@@ -57,7 +56,6 @@ export function UserDeleteDialog({ user, trigger }: UserDeleteDialogProps) {
     setIsDeleting(false);
 
     if (Exit.isSuccess(exit)) {
-      await invalidateUsers(undefined); // No argument needed by required by API
       setOpen(false);
       toast.success("User deleted successfully", {
         description: `${user.firstName} ${user.lastName} has been deleted.`,

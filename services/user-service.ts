@@ -143,6 +143,7 @@ export class UsersService extends Effect.Service<UsersService>()(
         userId: string,
       ): Effect.Effect<void, DeleteUserError> {
         return client.del(`${apiBaseUrl}/users/${userId}`).pipe(
+          Effect.delay("1 second"),
           Effect.asVoid,
           Effect.catchTags({
             RequestError: (requestError) =>
@@ -170,6 +171,7 @@ export class UsersService extends Effect.Service<UsersService>()(
       ): Effect.Effect<User, AddUserError> {
         return HttpClientRequest.post(`${apiBaseUrl}/users`).pipe(
           HttpClientRequest.bodyJson(user),
+          Effect.delay("1 second"),
           Effect.flatMap(client.execute),
           Effect.flatMap(HttpClientResponse.schemaBodyJson(UserSchema)),
           Effect.catchTags({
