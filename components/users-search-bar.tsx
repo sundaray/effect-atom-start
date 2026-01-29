@@ -1,14 +1,25 @@
 "use client";
 
-
+import { Atom, useAtom } from "@effect-atom/atom-react";
 
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
+import { pageAtom } from "@/atoms/page";
+import { searchQueryAtom } from "@/atoms/search";
+
 export function UsersSearchBar() {
+  const [query, setQuery] = useAtom(searchQueryAtom);
+  const [page, setPage] = useAtom(pageAtom);
 
   function handleSearch(value: string) {
+    Atom.batch(() => {
+      setQuery(value);
+      if (page !== 1) {
+        setPage(1);
+      }
+    });
   }
 
   function handleClear() {

@@ -1,36 +1,6 @@
 {
   "users": [
     {
-      "id": "1",
-      "firstName": "Emily",
-      "lastName": "Johnson",
-      "email": "emily.johnson@example.com",
-      "company": {
-        "name": "Dooley, Kozey and Cronin",
-        "title": "Sales Manager"
-      },
-      "address": {
-        "address": "626 Main Street",
-        "city": "Phoenix",
-        "state": "Mississippi"
-      }
-    },
-    {
-      "id": "2",
-      "firstName": "Michael",
-      "lastName": "Williams",
-      "email": "michael.williams@example.com",
-      "company": {
-        "name": "Spinka - Dickinson",
-        "title": "Support Specialist"
-      },
-      "address": {
-        "address": "385 Fifth Street",
-        "city": "Houston",
-        "state": "Alabama"
-      }
-    },
-    {
       "id": "3",
       "firstName": "Sophia",
       "lastName": "Brown",

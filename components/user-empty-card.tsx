@@ -2,7 +2,6 @@
 
 import { UsersIcon } from "lucide-react";
 
-
 import {
   Empty,
   EmptyDescription,
@@ -12,11 +11,10 @@ import {
 } from "@/components/ui/empty";
 
 export function UserEmptyCard() {
-
   const isSearching = true;
 
   const description = isSearching
-    ? `No users match the search query:.`
+    ? `No users match your search query.`
     : "The users list is currently empty.";
 
   return (

@@ -56,9 +56,14 @@ export class UsersService extends Effect.Service<UsersService>()(
 
       // ============ Get Users ============
 
-      function getUsers(): Effect.Effect<UsersResponse, GetUsersError> {
+      function getUsers(
+        query: string,
+        page: number,
+      ): Effect.Effect<UsersResponse, GetUsersError> {
         const request = HttpClientRequest.get(`${apiBaseUrl}/users`).pipe(
           HttpClientRequest.setUrlParams({
+            q: query,
+            _page: page.toString(),
             _limit: USERS_PER_PAGE.toString(),
           }),
         );
