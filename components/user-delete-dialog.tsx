@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useAtomSet } from "@effect-atom/atom-react";
-import { Reactivity } from "@effect/experimental";
 import { Cause, Exit, Option } from "effect";
 import { toast } from "sonner";
 
@@ -20,7 +19,7 @@ import {
 } from "@/components/ui/dialog";
 
 import { useSpinDelay } from "@/hooks/use-spin-delay";
-import { deleteUserAtom } from "@/atoms/users";
+import { deleteUserAtom, invalidateUsersAtom } from "@/atoms/users";
 import type { User } from "@/schema/user-schema";
 
 interface UserDeleteDialogProps {
@@ -47,6 +46,7 @@ export function UserDeleteDialog({ user, trigger }: UserDeleteDialogProps) {
   }
 
   const deleteUser = useAtomSet(deleteUserAtom, { mode: "promiseExit" });
+  const invalidateUsers = useAtomSet(invalidateUsersAtom, { mode: "promise" });
 
   async function handleDelete() {
     setIsDeleting(true);
@@ -57,6 +57,7 @@ export function UserDeleteDialog({ user, trigger }: UserDeleteDialogProps) {
     setIsDeleting(false);
 
     if (Exit.isSuccess(exit)) {
+      await invalidateUsers(undefined); // No argument needed by required by API
       setOpen(false);
       toast.success("User deleted successfully", {
         description: `${user.firstName} ${user.lastName} has been deleted.`,

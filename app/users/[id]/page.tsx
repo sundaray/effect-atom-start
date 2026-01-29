@@ -1,3 +1,5 @@
+"use client";
+
 import { Link } from "react-transition-progress/next";
 
 import { Icons } from "@/components/icons";

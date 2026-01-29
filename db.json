@@ -1,21 +1,6 @@
 {
   "users": [
     {
-      "id": "2",
-      "firstName": "Michael",
-      "lastName": "Williams",
-      "email": "michael.williams@example.com",
-      "company": {
-        "name": "Spinka - Dickinson",
-        "title": "Support Specialist"
-      },
-      "address": {
-        "address": "385 Fifth Street",
-        "city": "Houston",
-        "state": "Alabama"
-      }
-    },
-    {
       "id": "3",
       "firstName": "Sophia",
       "lastName": "Brown",

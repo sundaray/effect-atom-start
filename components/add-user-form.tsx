@@ -20,7 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 import { useSpinDelay } from "@/hooks/use-spin-delay";
-import { addUserAtom } from "@/atoms/users";
+import { addUserAtom, invalidateUsersAtom } from "@/atoms/users";
 import {
   AddUserFormSchema,
   type AddUserFormValues,
@@ -54,12 +54,14 @@ export function AddUserForm() {
   });
 
   const addUser = useAtomSet(addUserAtom, { mode: "promiseExit" });
+  const invalidateUsers = useAtomSet(invalidateUsersAtom, { mode: "promise" });
 
   const onSubmit = async (data: AddUserFormValues) => {
     setGlobalError(null);
     const exit = await addUser(data);
 
     if (Exit.isSuccess(exit)) {
+      await invalidateUsers(undefined);
       const user = exit.value;
 
       toast.success("User Added Successfully", {

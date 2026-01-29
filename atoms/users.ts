@@ -1,4 +1,5 @@
 import { Atom } from "@effect-atom/atom-react";
+import { Reactivity } from "@effect/experimental";
 import { Duration, Effect } from "effect";
 
 import { atomRuntime } from "@/atom-runtime";
@@ -48,7 +49,7 @@ export const deleteUserAtom = atomRuntime.fn<string>()(
   Effect.fnUntraced(function* (userId) {
     yield* UsersService.deleteUser(userId);
   }),
-  { reactivityKeys: ["users"] },
+  // { reactivityKeys: ["users"] },
 );
 
 // ============ Add User ============
@@ -56,5 +57,12 @@ export const addUserAtom = atomRuntime.fn<AddUserFormValues>()(
   Effect.fnUntraced(function* (user) {
     return yield* UsersService.addUser(user);
   }),
-  { reactivityKeys: ["users"] },
+  // { reactivityKeys: ["users"] },
+);
+
+// ============ Invalidate Users ============
+export const invalidateUsersAtom = atomRuntime.fn()(
+  Effect.fnUntraced(function* () {
+    yield* Reactivity.invalidate(["users"]);
+  }),
 );
