@@ -22,7 +22,7 @@ export function UserDetail() {
     })
     .onSuccess((user, { waiting }) => (
       <div className={waiting ? "opacity-50 transition-opacity" : ""}>
-        <UserDetailsCard user={user} />
+        <UserDetailsCard user={user} waiting={waiting} />
       </div>
     ))
     .render();

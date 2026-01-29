@@ -40,7 +40,7 @@ export const userAtom = Atom.family((id: string) =>
         return yield* UsersService.getUser(id);
       }),
     )
-    .pipe(Atom.setIdleTTL(Duration.hours(1))),
+    .pipe(Atom.setIdleTTL(Duration.hours(1)), Atom.refreshOnWindowFocus),
 );
 
 // ============ Delete User ============

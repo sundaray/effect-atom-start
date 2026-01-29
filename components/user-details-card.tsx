@@ -1,14 +1,21 @@
 import { Icons } from "@/components/icons";
 
+import { cn } from "@/lib/utils";
 import type { User } from "@/schema/user-schema";
 
 interface UserDetailsCardProps {
   user: User;
+  waiting?: boolean;
 }
 
-export function UserDetailsCard({ user }: UserDetailsCardProps) {
+export function UserDetailsCard({ user, waiting }: UserDetailsCardProps) {
   return (
-    <div className="bg-white border p-6 flex flex-col gap-6 relative max-w-md container">
+    <div
+      className={cn(
+        "bg-white border p-6 flex flex-col justify-between gap-6 relative container max-w-md",
+        waiting && "opacity-50 pointer-events-none",
+      )}
+    >
       <div className="space-y-2">
         <h3 className="font-semibold text-2xl">
           {user.firstName} {user.lastName}
