@@ -4,15 +4,22 @@ import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { UserDeleteDialog } from "@/components/user-delete-dialog";
 
+import { cn } from "@/lib/utils";
 import type { User } from "@/schema/user-schema";
 
 interface UserSuccessCardProps {
   user: User;
+  waiting?: boolean;
 }
 
-export function UserSuccessCard({ user }: UserSuccessCardProps) {
+export function UserSuccessCard({ user, waiting }: UserSuccessCardProps) {
   return (
-    <div className="bg-white border p-4 flex flex-col justify-between gap-4 relative">
+    <div
+      className={cn(
+        "bg-white border p-4 flex flex-col justify-between gap-4 relative",
+        waiting && "opacity-50 pointer-events-none",
+      )}
+    >
       <div className="space-y-1">
         <h3 className="font-semibold text-lg">
           {user.firstName} {user.lastName}

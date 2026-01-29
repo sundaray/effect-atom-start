@@ -14,7 +14,7 @@ export function UserGrid() {
 
   return Result.builder(usersResult)
 
-    .onInitialOrWaiting(() => <UserGridSpinner />)
+    .onInitial(() => <UserGridSpinner />)
 
     .onErrorTag("ConfigError", (error) => (
       <FailureCard title="Configuration Error" message={error.message} />
@@ -39,13 +39,13 @@ export function UserGrid() {
       />
     ))
 
-    .onSuccess((users) =>
+    .onSuccess((users, { waiting }) =>
       users.length === 0 ? (
         <UserEmptyCard />
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
           {users.map((user) => (
-            <UserSuccessCard key={user.id} user={user} />
+            <UserSuccessCard key={user.id} user={user} waiting={waiting} />
           ))}
         </div>
       ),

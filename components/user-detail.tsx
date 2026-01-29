@@ -8,7 +8,7 @@ import { UserDetailsCard } from "@/components/user-details-card";
 import { UserGridSpinner } from "@/components/user-grid-spinner";
 
 import { getErrorInfo } from "@/lib/utils";
-import { userAtom } from "@/atoms/user";
+import { userAtom } from "@/atoms/users";
 
 export function UserDetail() {
   const params = useParams<{ id: string }>();

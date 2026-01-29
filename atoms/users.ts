@@ -15,7 +15,11 @@ const usersResponseAtom = atomRuntime
       return yield* UsersService.getUsers(query, page);
     }),
   )
-  .pipe(Atom.setIdleTTL(Duration.hours(1)), Atom.withReactivity(["users"]));
+  .pipe(
+    Atom.setIdleTTL(Duration.hours(1)),
+    Atom.refreshOnWindowFocus,
+    Atom.withReactivity(["users"]),
+  );
 
 // ============ Get Users ============
 export const usersAtom = Atom.mapResult(
@@ -44,7 +48,7 @@ export const deleteUserAtom = atomRuntime.fn<string>()(
   Effect.fnUntraced(function* (userId) {
     yield* UsersService.deleteUser(userId);
   }),
-  // { reactivityKeys: ["users"] },
+  { reactivityKeys: ["users"] },
 );
 
 // ============ Add User ============
@@ -52,5 +56,5 @@ export const addUserAtom = atomRuntime.fn<AddUserFormValues>()(
   Effect.fnUntraced(function* (user) {
     return yield* UsersService.addUser(user);
   }),
-  // { reactivityKeys: ["users"] },
+  { reactivityKeys: ["users"] },
 );
