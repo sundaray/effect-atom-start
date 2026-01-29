@@ -1,51 +1,6 @@
 {
   "users": [
     {
-      "id": "2",
-      "firstName": "Michael",
-      "lastName": "Williams",
-      "email": "michael.williams@example.com",
-      "company": {
-        "name": "Spinka - Dickinson",
-        "title": "Support Specialist"
-      },
-      "address": {
-        "address": "385 Fifth Street",
-        "city": "Houston",
-        "state": "Alabama"
-      }
-    },
-    {
-      "id": "4",
-      "firstName": "James",
-      "lastName": "Davis",
-      "email": "james.davis@example.com",
-      "company": {
-        "name": "Pagac and Sons",
-        "title": "Research Analyst"
-      },
-      "address": {
-        "address": "238 Jefferson Street",
-        "city": "Seattle",
-        "state": "Pennsylvania"
-      }
-    },
-    {
-      "id": "5",
-      "firstName": "Emma",
-      "lastName": "Miller",
-      "email": "emma.miller@example.com",
-      "company": {
-        "name": "Graham - Gulgowski",
-        "title": "Quality Assurance Engineer"
-      },
-      "address": {
-        "address": "607 Fourth Street",
-        "city": "Jacksonville",
-        "state": "Colorado"
-      }
-    },
-    {
       "id": "6",
       "firstName": "Olivia",
       "lastName": "Wilson",
@@ -58,21 +13,6 @@
         "address": "547 First Street",
         "city": "Fort Worth",
         "state": "Tennessee"
-      }
-    },
-    {
-      "id": "7",
-      "firstName": "Alexander",
-      "lastName": "Jones",
-      "email": "alexander.jones@example.com",
-      "company": {
-        "name": "Dickens - Beahan",
-        "title": "Web Developer"
-      },
-      "address": {
-        "address": "664 Maple Street",
-        "city": "Indianapolis",
-        "state": "Delaware"
       }
     },
     {

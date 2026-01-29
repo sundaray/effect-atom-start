@@ -55,10 +55,3 @@ export const addUserAtom = atomRuntime.fn<AddUserFormValues>()(
   }),
   { reactivityKeys: ["users"] },
 );
-
-// ============ Invalidate Users ============
-export const invalidateUsersAtom = atomRuntime.fn()(
-  Effect.fnUntraced(function* () {
-    yield* Reactivity.invalidate(["users"]);
-  }),
-);

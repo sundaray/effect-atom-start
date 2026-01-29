@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/dialog";
 
 import { useSpinDelay } from "@/hooks/use-spin-delay";
-import { deleteUserAtom, invalidateUsersAtom } from "@/atoms/users";
+import { deleteUserAtom } from "@/atoms/users";
 import type { User } from "@/schema/user-schema";
 
 interface UserDeleteDialogProps {
