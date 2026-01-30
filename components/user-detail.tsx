@@ -21,9 +21,7 @@ export function UserDetail() {
       return <FailureCard title={title} message={message} />;
     })
     .onSuccess((user, { waiting }) => (
-      <div className={waiting ? "opacity-50 transition-opacity" : ""}>
-        <UserDetailsCard user={user} waiting={waiting} />
-      </div>
+      <UserDetailsCard user={user} waiting={waiting} />
     ))
     .render();
 }

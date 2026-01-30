@@ -1,6 +1,66 @@
 {
   "users": [
     {
+      "id": "1",
+      "firstName": "Emily",
+      "lastName": "Johnson",
+      "email": "emily.johnson@example.com",
+      "company": {
+        "name": "Dooley, Kozey and Cronin",
+        "title": "Sales Manager"
+      },
+      "address": {
+        "address": "626 Main Street",
+        "city": "Phoenix",
+        "state": "Mississippi"
+      }
+    },
+    {
+      "id": "3",
+      "firstName": "Sophia",
+      "lastName": "Brown",
+      "email": "sophia.brown@example.com",
+      "company": {
+        "name": "Schiller - Zieme",
+        "title": "Accountant"
+      },
+      "address": {
+        "address": "1642 Ninth Street",
+        "city": "Washington",
+        "state": "Alabama"
+      }
+    },
+    {
+      "id": "4",
+      "firstName": "James",
+      "lastName": "Davis",
+      "email": "james.davis@example.com",
+      "company": {
+        "name": "Pagac and Sons",
+        "title": "Research Analyst"
+      },
+      "address": {
+        "address": "238 Jefferson Street",
+        "city": "Seattle",
+        "state": "Pennsylvania"
+      }
+    },
+    {
+      "id": "5",
+      "firstName": "Emma",
+      "lastName": "Miller",
+      "email": "emma.miller@example.com",
+      "company": {
+        "name": "Graham - Gulgowski",
+        "title": "Quality Assurance Engineer"
+      },
+      "address": {
+        "address": "607 Fourth Street",
+        "city": "Jacksonville",
+        "state": "Colorado"
+      }
+    },
+    {
       "id": "6",
       "firstName": "Olivia",
       "lastName": "Wilson",
@@ -13,6 +73,21 @@
         "address": "547 First Street",
         "city": "Fort Worth",
         "state": "Tennessee"
+      }
+    },
+    {
+      "id": "7",
+      "firstName": "Alexander",
+      "lastName": "Jones",
+      "email": "alexander.jones@example.com",
+      "company": {
+        "name": "Dickens - Beahan",
+        "title": "Web Developer"
+      },
+      "address": {
+        "address": "664 Maple Street",
+        "city": "Indianapolis",
+        "state": "Delaware"
       }
     },
     {

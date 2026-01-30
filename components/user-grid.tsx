@@ -3,14 +3,21 @@
 import { Result, useAtomValue } from "@effect-atom/atom-react";
 
 import { FailureCard } from "@/components/failure-card";
-import { UserEmptyCard } from "@/components/user-empty-card";
+import {
+  getNoUsersFoundReason,
+  UserEmptyCard,
+} from "@/components/user-empty-card";
 import { UserGridSpinner } from "@/components/user-grid-spinner";
 import { UserSuccessCard } from "@/components/user-success-card";
 
+import { pageAtom } from "@/atoms/page";
+import { searchQueryAtom } from "@/atoms/search";
 import { usersAtom } from "@/atoms/users";
 
 export function UserGrid() {
   const usersResult = useAtomValue(usersAtom);
+  const searchQuery = useAtomValue(searchQueryAtom);
+  const page = useAtomValue(pageAtom);
 
   return Result.builder(usersResult)
 
@@ -41,12 +48,22 @@ export function UserGrid() {
 
     .onSuccess((users, { waiting }) =>
       users.length === 0 ? (
-        <UserEmptyCard />
+        <UserEmptyCard
+          reason={getNoUsersFoundReason(users, searchQuery, page)}
+          page={page}
+        />
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
-          {users.map((user) => (
-            <UserSuccessCard key={user.id} user={user} waiting={waiting} />
-          ))}
+        <div className="relative">
+          {waiting && (
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 z-10">
+              <UserGridSpinner />
+            </div>
+          )}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
+            {users.map((user) => (
+              <UserSuccessCard key={user.id} user={user} waiting={waiting} />
+            ))}
+          </div>
         </div>
       ),
     )
