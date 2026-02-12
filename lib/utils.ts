@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 const errorTitles: Record<string, string> = {
-  GetUsersRequestError: "Connection Failed",
+  GetUsersRequestError: "Connection Error",
   GetUsersResponseError: "Server Error",
   GetUsersParseError: "Data Error",
   ConfigError: "Configuration Error",

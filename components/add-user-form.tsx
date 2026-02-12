@@ -19,8 +19,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-import { useSpinDelay } from "@/hooks/use-spin-delay";
-import { addUserAtom } from "@/atoms/users";
 import {
   AddUserFormSchema,
   type AddUserFormValues,
@@ -48,36 +46,7 @@ export function AddUserForm() {
     },
   });
 
-  const showSpinner = useSpinDelay(isSubmitting, {
-    delay: 0,
-    minDuration: 500,
-  });
-
-  const addUser = useAtomSet(addUserAtom, { mode: "promiseExit" });
-
-  const onSubmit = async (data: AddUserFormValues) => {
-    setGlobalError(null);
-    const exit = await addUser(data);
-
-    if (Exit.isSuccess(exit)) {
-      const user = exit.value;
-
-      toast.success("User Added Successfully", {
-        description: `${user.firstName} ${user.lastName} was added successfully.`,
-      });
-
-      startTransition(() => {
-        startProgress();
-        router.push("/");
-      });
-    } else {
-      const failureOption = Cause.failureOption(exit.cause);
-      const errorMessage = Option.isSome(failureOption)
-        ? failureOption.value.message
-        : "An unexpected error occurred";
-      setGlobalError(errorMessage);
-    }
-  };
+  const onSubmit = async (data: AddUserFormValues) => {};
   return (
     <Card>
       <CardContent className="mt-4">
@@ -216,7 +185,7 @@ export function AddUserForm() {
 
           <div className="pt-4 flex justify-end">
             <Button type="submit" disabled={isSubmitting}>
-              {showSpinner && <Icons.spinner className="size-4 animate-spin" />}
+              <Icons.spinner className="size-4 animate-spin" />
               Add User
             </Button>
           </div>

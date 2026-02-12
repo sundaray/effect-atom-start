@@ -1,21 +1,6 @@
 {
   "users": [
     {
-      "id": "1",
-      "firstName": "Emily",
-      "lastName": "Johnson",
-      "email": "emily.johnson@example.com",
-      "company": {
-        "name": "Dooley, Kozey and Cronin",
-        "title": "Sales Manager"
-      },
-      "address": {
-        "address": "626 Main Street",
-        "city": "Phoenix",
-        "state": "Mississippi"
-      }
-    },
-    {
       "id": "3",
       "firstName": "Sophia",
       "lastName": "Brown",
@@ -31,51 +16,6 @@
       }
     },
     {
-      "id": "4",
-      "firstName": "James",
-      "lastName": "Davis",
-      "email": "james.davis@example.com",
-      "company": {
-        "name": "Pagac and Sons",
-        "title": "Research Analyst"
-      },
-      "address": {
-        "address": "238 Jefferson Street",
-        "city": "Seattle",
-        "state": "Pennsylvania"
-      }
-    },
-    {
-      "id": "5",
-      "firstName": "Emma",
-      "lastName": "Miller",
-      "email": "emma.miller@example.com",
-      "company": {
-        "name": "Graham - Gulgowski",
-        "title": "Quality Assurance Engineer"
-      },
-      "address": {
-        "address": "607 Fourth Street",
-        "city": "Jacksonville",
-        "state": "Colorado"
-      }
-    },
-    {
-      "id": "6",
-      "firstName": "Olivia",
-      "lastName": "Wilson",
-      "email": "olivia.wilson@example.com",
-      "company": {
-        "name": "Pfannerstill Inc",
-        "title": "Research Analyst"
-      },
-      "address": {
-        "address": "547 First Street",
-        "city": "Fort Worth",
-        "state": "Tennessee"
-      }
-    },
-    {
       "id": "7",
       "firstName": "Alexander",
       "lastName": "Jones",
@@ -88,21 +28,6 @@
         "address": "664 Maple Street",
         "city": "Indianapolis",
         "state": "Delaware"
-      }
-    },
-    {
-      "id": "8",
-      "firstName": "Ava",
-      "lastName": "Taylor",
-      "email": "ava.taylor@example.com",
-      "company": {
-        "name": "Nikolaus Inc",
-        "title": "Chief Executive Officer"
-      },
-      "address": {
-        "address": "1197 First Street",
-        "city": "Fort Worth",
-        "state": "Rhode Island"
       }
     },
     {

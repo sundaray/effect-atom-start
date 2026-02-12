@@ -5,7 +5,6 @@ import "./globals.css";
 
 import { Toaster } from "@/components/ui/sonner";
 
-import { AtomRegistryProvider } from "@/providers/atom-registry-provider";
 import { ProgressBarProvider } from "@/providers/progress-bar-provider";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
@@ -36,11 +35,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col antialiased`}
       >
-        <AtomRegistryProvider>
-          <ProgressBarProvider>
-            <main className="py-24">{children}</main>
-          </ProgressBarProvider>
-        </AtomRegistryProvider>
+        <ProgressBarProvider>
+          <main className="py-24">{children}</main>
+        </ProgressBarProvider>
         <Toaster position="top-right" />
       </body>
     </html>

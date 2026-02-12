@@ -18,8 +18,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { useSpinDelay } from "@/hooks/use-spin-delay";
-import { deleteUserAtom } from "@/atoms/users";
 import type { User } from "@/schema/user-schema";
 
 interface UserDeleteDialogProps {
@@ -32,11 +30,6 @@ export function UserDeleteDialog({ user, trigger }: UserDeleteDialogProps) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const showSpinner = useSpinDelay(isDeleting, {
-    delay: 0,
-    minDuration: 500,
-  });
-
   function handleOpenChange(isOpen: boolean) {
     setOpen(isOpen);
     // Clear error when dialog opens or closes
@@ -45,29 +38,7 @@ export function UserDeleteDialog({ user, trigger }: UserDeleteDialogProps) {
     }
   }
 
-  const deleteUser = useAtomSet(deleteUserAtom, { mode: "promiseExit" });
-
-  async function handleDelete() {
-    setIsDeleting(true);
-    setError(null);
-
-    const exit = await deleteUser(user.id);
-
-    setIsDeleting(false);
-
-    if (Exit.isSuccess(exit)) {
-      setOpen(false);
-      toast.success("User deleted successfully", {
-        description: `${user.firstName} ${user.lastName} has been deleted.`,
-      });
-    } else {
-      const failureOption = Cause.failureOption(exit.cause);
-      const errorMessage = Option.isSome(failureOption)
-        ? failureOption.value.message
-        : "An unexpected error occurred";
-      setError(errorMessage);
-    }
-  }
+  async function handleDelete() {}
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
@@ -99,7 +70,7 @@ export function UserDeleteDialog({ user, trigger }: UserDeleteDialogProps) {
             onClick={handleDelete}
             disabled={isDeleting}
           >
-            {showSpinner && <Icons.spinner className="size-4 animate-spin" />}
+            <Icons.spinner className="size-4 animate-spin" />
             Delete
           </Button>
         </DialogFooter>

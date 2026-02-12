@@ -10,62 +10,6 @@ import {
 import { UserGridSpinner } from "@/components/user-grid-spinner";
 import { UserSuccessCard } from "@/components/user-success-card";
 
-import { pageAtom } from "@/atoms/page";
-import { searchQueryAtom } from "@/atoms/search";
-import { usersAtom } from "@/atoms/users";
-
 export function UserGrid() {
-  const usersResult = useAtomValue(usersAtom);
-  const searchQuery = useAtomValue(searchQueryAtom);
-  const page = useAtomValue(pageAtom);
-
-  return Result.builder(usersResult)
-
-    .onInitial(() => <UserGridSpinner />)
-
-    .onErrorTag("ConfigError", (error) => (
-      <FailureCard title="Configuration Error" message={error.message} />
-    ))
-
-    .onErrorTag("GetUsersRequestError", (error) => (
-      <FailureCard title="Connection Failed" message={error.message} />
-    ))
-
-    .onErrorTag("GetUsersResponseError", (error) => (
-      <FailureCard title="Server Error" message={error.message} />
-    ))
-
-    .onErrorTag("GetUsersParseError", (error) => (
-      <FailureCard title="Data Error" message={error.message} />
-    ))
-
-    .onDefect(() => (
-      <FailureCard
-        title="Unexpected Error"
-        message="Something went wrong. Please try refreshing the page."
-      />
-    ))
-
-    .onSuccess((users, { waiting }) =>
-      users.length === 0 ? (
-        <UserEmptyCard
-          reason={getNoUsersFoundReason(users, searchQuery, page)}
-          page={page}
-        />
-      ) : (
-        <div className="relative">
-          {waiting && (
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 z-10">
-              <UserGridSpinner />
-            </div>
-          )}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
-            {users.map((user) => (
-              <UserSuccessCard key={user.id} user={user} waiting={waiting} />
-            ))}
-          </div>
-        </div>
-      ),
-    )
-    .render();
+  return <h1>User Grid</h1>;
 }
