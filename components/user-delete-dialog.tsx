@@ -1,9 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useAtomSet } from "@effect-atom/atom-react";
-import { Cause, Exit, Option } from "effect";
-import { toast } from "sonner";
 
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
@@ -32,7 +29,6 @@ export function UserDeleteDialog({ user, trigger }: UserDeleteDialogProps) {
 
   function handleOpenChange(isOpen: boolean) {
     setOpen(isOpen);
-    // Clear error when dialog opens or closes
     if (!isOpen) {
       setError(null);
     }
@@ -53,7 +49,7 @@ export function UserDeleteDialog({ user, trigger }: UserDeleteDialogProps) {
         </DialogHeader>
 
         {error && (
-          <div className="flex items-center gap-2 p-3 text-sm text-red-600 bg-red-50 border border-red-200">
+          <div className="flex items-center gap-2 border border-red-200 bg-red-50 p-3 text-sm text-red-600">
             <Icons.alert className="size-4 shrink-0" />
             <span>{error}</span>
           </div>
