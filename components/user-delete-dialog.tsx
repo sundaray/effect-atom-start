@@ -66,7 +66,7 @@ export function UserDeleteDialog({ user, trigger }: UserDeleteDialogProps) {
             onClick={handleDelete}
             disabled={isDeleting}
           >
-            <Icons.spinner className="size-4 animate-spin" />
+            {isDeleting && <Icons.spinner className="size-4 animate-spin" />}
             Delete
           </Button>
         </DialogFooter>
