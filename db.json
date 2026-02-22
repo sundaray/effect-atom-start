@@ -1,21 +1,6 @@
 {
   "users": [
     {
-      "id": "1",
-      "firstName": "Emily",
-      "lastName": "Johnson",
-      "email": "emily.johnson@example.com",
-      "company": {
-        "name": "Dooley, Kozey and Cronin",
-        "title": "Sales Manager"
-      },
-      "address": {
-        "address": "626 Main Street",
-        "city": "Phoenix",
-        "state": "Mississippi"
-      }
-    },
-    {
       "id": "2",
       "firstName": "Michael",
       "lastName": "Williams",
@@ -148,36 +133,6 @@
         "address": "1964 Oak Street",
         "city": "New York",
         "state": "Utah"
-      }
-    },
-    {
-      "id": "11",
-      "firstName": "Liam",
-      "lastName": "Garcia",
-      "email": "liam.garcia@example.com",
-      "company": {
-        "name": "Considine - Torp",
-        "title": "Web Developer"
-      },
-      "address": {
-        "address": "576 Fifth Street",
-        "city": "Denver",
-        "state": "South Dakota"
-      }
-    },
-    {
-      "id": "12",
-      "firstName": "Mia",
-      "lastName": "Rodriguez",
-      "email": "mia.rodriguez@example.com",
-      "company": {
-        "name": "Miller, Schowalter and Wisozk",
-        "title": "Business Analyst"
-      },
-      "address": {
-        "address": "1627 Sixth Street",
-        "city": "Jacksonville",
-        "state": "West Virginia"
       }
     }
   ]

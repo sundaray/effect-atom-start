@@ -2,9 +2,12 @@
 
 import { startTransition, useId, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAtomRefresh, useAtomSet } from "@effect/atom-react";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
+import { Cause, Exit, Option } from "effect";
 import { useForm } from "react-hook-form";
 import { useProgress } from "react-transition-progress";
+import { toast } from "sonner";
 
 import {
   FormErrorMessage,
@@ -16,6 +19,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+import { addUserAtom, usersAtom } from "@/atoms/user";
 import {
   AddUserFormStandardSchema,
   type AddUserFormValues,
@@ -27,6 +31,9 @@ export function AddUserForm() {
   const startProgress = useProgress();
 
   const [globalError, setGlobalError] = useState<string | null>(null);
+
+  const addUser = useAtomSet(addUserAtom, { mode: "promiseExit" });
+  const refreshUsers = useAtomRefresh(usersAtom);
 
   const {
     register,
@@ -43,7 +50,29 @@ export function AddUserForm() {
     },
   });
 
-  const onSubmit = async (data: AddUserFormValues) => {};
+  const onSubmit = async (data: AddUserFormValues) => {
+    setGlobalError(null);
+
+    const exit = await addUser(data);
+
+    if (Exit.isSuccess(exit)) {
+      const user = exit.value;
+      refreshUsers();
+      toast.success("User Added Successfully", {
+        description: `${user.firstName} ${user.lastName} was added successfully.`,
+      });
+      startTransition(() => {
+        startProgress();
+        router.push("/");
+      });
+    } else {
+      const failureOption = Cause.findErrorOption(exit.cause);
+      const errorMessage = Option.isSome(failureOption)
+        ? failureOption.value.message
+        : "An unexpected error occurred";
+      setGlobalError(errorMessage);
+    }
+  };
   return (
     <Card>
       <CardContent className="mt-4">

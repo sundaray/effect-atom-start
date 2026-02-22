@@ -33,9 +33,9 @@ export function UserEmptyCard({ reason, page }: UserEmptyCardProps) {
     <Empty className="border py-10">
       <EmptyHeader>
         <EmptyMedia variant="icon">
-          <UsersIcon className="text-neutral-400 size-10" />
+          <UsersIcon className="size-10 text-neutral-400" />
         </EmptyMedia>
-        <EmptyTitle className="font-bold text-lg">No Users Found</EmptyTitle>
+        <EmptyTitle className="text-lg font-bold">No Users Found</EmptyTitle>
         <EmptyDescription className="text-sm">
           {descriptions[reason]}
         </EmptyDescription>
