@@ -2,7 +2,7 @@
 
 import { startTransition, useId, useState } from "react";
 import { useRouter } from "next/navigation";
-import { effectTsResolver } from "@hookform/resolvers/effect-ts";
+import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { useForm } from "react-hook-form";
 import { useProgress } from "react-transition-progress";
 
@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 import {
-  AddUserFormSchema,
+  AddUserFormStandardSchema,
   type AddUserFormValues,
 } from "@/schema/user-schema";
 
@@ -33,7 +33,7 @@ export function AddUserForm() {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<AddUserFormValues>({
-    resolver: effectTsResolver(AddUserFormSchema),
+    resolver: standardSchemaResolver(AddUserFormStandardSchema),
     defaultValues: {
       firstName: "",
       lastName: "",

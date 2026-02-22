@@ -16,16 +16,17 @@ export const UserSchema = Schema.Struct({
   }),
 });
 
-const requiredString = (message: string) =>
-  Schema.NonEmptyString.annotations({ message: () => message });
+function requiredString(message: string) {
+  return Schema.String.check(Schema.isNonEmpty({ message }));
+}
 
 export const AddUserFormSchema = Schema.Struct({
   firstName: requiredString("First name is required"),
   lastName: requiredString("Last name is required"),
 
-  email: Schema.String.pipe(
-    Schema.nonEmptyString({ message: () => "Email is required" }),
-    Schema.includes("@", { message: () => "Invalid email address" }),
+  email: Schema.String.check(
+    Schema.isNonEmpty({ message: "Email is required" }),
+    Schema.isIncludes("@", { message: "Invalid email address" }),
   ),
 
   company: Schema.Struct({
@@ -39,6 +40,10 @@ export const AddUserFormSchema = Schema.Struct({
     state: requiredString("State is required"),
   }),
 });
+
+// Export the Standard Schema version for use with hook form
+export const AddUserFormStandardSchema =
+  Schema.toStandardSchemaV1(AddUserFormSchema);
 
 export const UsersSchema = Schema.Array(UserSchema);
 
