@@ -19,9 +19,9 @@ export function FailureCard({ title, message, onRetry }: FailureCardProps) {
     <Empty className="border py-10">
       <EmptyHeader>
         <EmptyMedia variant="icon">
-          <Icons.alert className="text-red-600 size-10" />
+          <Icons.alert className="size-8 text-red-600" />
         </EmptyMedia>
-        <EmptyTitle className="text-red-600 text-lg font-bold">
+        <EmptyTitle className="text-lg font-bold text-red-600">
           {title}
         </EmptyTitle>
         <EmptyDescription className="text-sm">{message}</EmptyDescription>
