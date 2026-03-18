@@ -1,29 +1,59 @@
-import { Duration, Effect } from "effect";
-import { Atom, Reactivity } from "effect/unstable/reactivity";
+import { Array as Arr, Duration, Effect, Stream } from "effect";
+import { AsyncResult, Atom, Reactivity } from "effect/unstable/reactivity";
 
 import { atomRuntime } from "@/atom-runtime";
 import { pageAtom } from "@/atoms/page";
 import { debouncedSearchQueryAtom } from "@/atoms/search";
-import { type AddUserFormValues } from "@/schema/user-schema";
+import {
+  UsersResponseAsyncResultSchema,
+  type AddUserFormValues,
+} from "@/schema/user-schema";
 import { UserService } from "@/services/user-service";
 
-const baseUsersAtom = atomRuntime
-  .atom((get) =>
-    Effect.gen(function* () {
-      const page = get(pageAtom);
-      const query = get(debouncedSearchQueryAtom);
+// ============ Users Family Atom ============
+const usersFamily = Atom.family((key: [string, number]) => {
+  const [query, page] = key;
+
+  const base = atomRuntime.atom(() => {
+    return Effect.gen(function* () {
       const userService = yield* UserService;
       return yield* userService.getUsers(query, page);
+    });
+  });
+
+  return base.pipe(
+    Atom.serializable({
+      key: `users:${query}:${page}`,
+      schema: UsersResponseAsyncResultSchema,
     }),
-  )
-  .pipe(Atom.setIdleTTL(Duration.hours(1)), Atom.withReactivity(["users"]));
+    Atom.withReactivity(["users"]),
+    Atom.setIdleTTL(Duration.hours(1)),
+  );
+});
 
 // ============ Users Atom ============
-export const usersAtom = (
-  typeof window !== "undefined"
-    ? Atom.refreshOnWindowFocus(baseUsersAtom)
-    : baseUsersAtom
-).pipe(Atom.setIdleTTL(Duration.hours(1)), Atom.withReactivity(["users"]));
+export const usersAtom = (query: string, page: number) =>
+  usersFamily([query, page]);
+
+// ============ Current Users Atom ============
+export const currentUsersAtom = Atom.readable((get) => {
+  const query = get(debouncedSearchQueryAtom);
+  const page = get(pageAtom);
+  return get(usersAtom(query, page));
+});
+
+// ============ Load More Users Atom (Pull Atom) ============
+export const usersLoadMoreAtom = atomRuntime
+  .pull((get) => {
+    const query = get(debouncedSearchQueryAtom);
+    return Stream.unwrap(
+      Effect.gen(function* () {
+        const userService = yield* UserService;
+        return userService.getUsersStream(query);
+      }),
+    );
+  })
+  .pipe(Atom.setIdleTTL(Duration.hours(1)));
 
 // ============ User Atom ============
 export const userAtom = Atom.family((id: string) => {
@@ -45,7 +75,6 @@ export const deleteUserAtom = atomRuntime.fn(
     const userService = yield* UserService;
     yield* userService.deleteUser(userId);
   }),
-  { reactivityKeys: ["users"] },
 );
 
 // ============ Add User Atom ============
@@ -62,3 +91,19 @@ export const invalidateUsersAtom = atomRuntime.fn()(
     yield* Reactivity.invalidate(["users"]);
   }),
 );
+
+// ============ Optimistic Users Atom ============
+export const optimisticUsersAtom = Atom.optimistic(usersLoadMoreAtom);
+
+// ============ Optimistic Delete Users Atom ============
+export const optimisticDeleteUserAtom = Atom.optimisticFn(optimisticUsersAtom, {
+  reducer: (current, userId: string) =>
+    AsyncResult.map(current, (data) => ({
+      ...data,
+      items: Arr.map(data.items, (chunk) => ({
+        ...chunk,
+        users: Arr.filter(chunk.users, (user) => user.id !== userId),
+      })),
+    })),
+  fn: deleteUserAtom,
+});

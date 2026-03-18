@@ -1,30 +1,43 @@
-"use client";
+import { Effect, Option, Schema } from "effect";
+import { AtomRegistry, Hydration } from "effect/unstable/reactivity";
 
-import { Suspense } from "react";
-import { Link } from "react-transition-progress/next";
+import { HomePageClient } from "@/components/home-page-client";
+import { HydrationBoundary } from "@/components/hydration-boundary";
 
-import { UserGridSpinner } from "@/components/user-grid-spinner";
-import { UserGridSuspense } from "@/components/user-grid-suspense";
-import { UserPagination } from "@/components/user-pagination";
-import { UserSearchBar } from "@/components/user-search-bar";
+import { prefetch } from "@/lib/utils";
+import { usersAtom } from "@/atoms/user";
 
-export default function HomePage() {
+const SearchParamsSchema = Schema.Struct({
+  q: Schema.String.pipe(Schema.withDecodingDefault(() => "")),
+  page: Schema.NumberFromString.check(
+    Schema.isInt(),
+    Schema.isGreaterThanOrEqualTo(1),
+  ).pipe(
+    Schema.catchDecoding(() => Effect.succeed(Option.some(1))),
+    Schema.withDecodingDefault(() => "1"),
+  ),
+});
+
+const decodeSearchParams = Schema.decodeUnknownSync(SearchParamsSchema);
+
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const { q: query, page: pageNum } = decodeSearchParams(await searchParams);
+
+  const registry = AtomRegistry.make();
+  const homeUsersAtom = usersAtom(query, pageNum);
+
+  registry.mount(homeUsersAtom);
+  await prefetch(registry, homeUsersAtom);
+
+  const state = Hydration.dehydrate(registry);
+
   return (
-    <div className="container max-w-5xl space-y-10">
-      <div className="flex items-center justify-between">
-        <h1>Users</h1>
-        <Link
-          href="/add-user"
-          className="bg-accent text-foreground px-4 py-2 text-sm font-medium transition-colors hover:bg-neutral-200"
-        >
-          + Add User
-        </Link>
-      </div>
-      <UserSearchBar />
-      <Suspense fallback={<UserGridSpinner />}>
-        <UserGridSuspense />
-      </Suspense>
-      <UserPagination />
-    </div>
+    <HydrationBoundary state={state}>
+      <HomePageClient query={query} page={pageNum} />
+    </HydrationBoundary>
   );
 }

@@ -10,11 +10,11 @@ import { UserSuccessCard } from "@/components/user-success-card";
 
 import { usersAtom } from "@/atoms/user";
 
-const selectUsers = (result: Atom.Type<typeof usersAtom>) =>
-  AsyncResult.map(result, (data) => data.users);
+// const selectUsers = (result: Atom.Type<typeof usersAtom>) =>
+//   AsyncResult.map(result, (data) => data.users);
 
-export function UserGrid() {
-  const usersResult = useAtomValue(usersAtom, selectUsers);
+export function UserGrid({ usersStateAtom }) {
+  const usersResult = useAtomValue(usersStateAtom);
 
   return AsyncResult.builder(usersResult)
     .onInitial(() => <UserGridSpinner />)

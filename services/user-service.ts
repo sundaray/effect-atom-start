@@ -1,4 +1,4 @@
-import { Effect, Layer, ServiceMap } from "effect";
+import { Effect, Layer, Option, ServiceMap, Stream } from "effect";
 import {
   FetchHttpClient,
   HttpClient,
@@ -14,6 +14,7 @@ import {
   UserSchema,
   UsersSchema,
   type AddUserFormValues,
+  type PageChunk,
   type User,
   type UsersResponse,
 } from "@/schema/user-schema";
@@ -65,6 +66,24 @@ export class UserService extends ServiceMap.Service<UserService>()(
         );
       }
 
+      // ============ Get Users Stream ============
+      function getUsersStream(
+        query: string,
+      ): Stream.Stream<PageChunk, HttpError> {
+        return Stream.paginate(1, (page) =>
+          getUsers(query, page).pipe(
+            Effect.map(({ users, usersCount }) => {
+              const totalPages = Math.ceil(usersCount / USERS_PER_PAGE);
+              const hasMore = page < totalPages;
+              return [
+                [{ users, hasMore }],
+                hasMore ? Option.some(page + 1) : Option.none(),
+              ];
+            }),
+          ),
+        );
+      }
+
       // ============ Get User ============
       function getUser(id: string): Effect.Effect<User, HttpError> {
         return client.get(`${apiBaseUrl}/users/${id}`).pipe(
@@ -86,7 +105,7 @@ export class UserService extends ServiceMap.Service<UserService>()(
 
       // ============ Delete User ============
       function deleteUser(userId: string): Effect.Effect<void, HttpError> {
-        return client.del(`${apiBaseUrl}/users/${userId}`).pipe(
+        return client.del(`${apiBaseUrl}/usersx/${userId}`).pipe(
           Effect.delay("1 second"),
           Effect.asVoid,
           Effect.catchTag("HttpClientError", (error) =>
@@ -118,7 +137,7 @@ export class UserService extends ServiceMap.Service<UserService>()(
         );
       }
 
-      return { getUsers, getUser, deleteUser, addUser };
+      return { getUsers, getUsersStream, getUser, deleteUser, addUser };
     }),
   },
 ) {

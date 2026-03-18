@@ -16,6 +16,21 @@
       }
     },
     {
+      "id": "2",
+      "firstName": "Michael",
+      "lastName": "Williams",
+      "email": "michael.williams@example.com",
+      "company": {
+        "name": "Spinka - Dickinson",
+        "title": "Support Specialist"
+      },
+      "address": {
+        "address": "385 Fifth Street",
+        "city": "Houston",
+        "state": "Alabama"
+      }
+    },
+    {
       "id": "3",
       "firstName": "Sophia",
       "lastName": "Brown",
@@ -151,19 +166,19 @@
       }
     },
     {
-      "firstName": "Hemanta",
-      "lastName": "Sundaray",
-      "email": "hemanta@gmail.com",
+      "id": "12",
+      "firstName": "Mia",
+      "lastName": "Rodriguez",
+      "email": "mia.rodriguez@example.com",
       "company": {
-        "name": "Hello",
-        "title": "Hello"
+        "name": "Miller, Schowalter and Wisozk",
+        "title": "Business Analyst"
       },
       "address": {
-        "address": "Hello",
-        "city": "Hello",
-        "state": "Hello"
-      },
-      "id": "ua68tm3"
+        "address": "1627 Sixth Street",
+        "city": "Jacksonville",
+        "state": "West Virginia"
+      }
     }
   ]
 }

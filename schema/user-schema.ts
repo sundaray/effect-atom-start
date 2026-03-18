@@ -1,4 +1,7 @@
 import { Schema } from "effect";
+import { AsyncResult } from "effect/unstable/reactivity";
+
+import { HttpErrorSchema } from "@/errors";
 
 export const UserSchema = Schema.Struct({
   id: Schema.String,
@@ -52,7 +55,18 @@ export const UsersResponseSchema = Schema.Struct({
   usersCount: Schema.Number,
 });
 
+export const UsersResponseAsyncResultSchema = AsyncResult.Schema({
+  success: UsersResponseSchema,
+  error: HttpErrorSchema,
+});
+
+export const PageChunkSchema = Schema.Struct({
+  users: UsersSchema,
+  hasMore: Schema.Boolean,
+});
+
 // Derive TypeScript types from schemas
 export type User = typeof UserSchema.Type;
 export type UsersResponse = typeof UsersResponseSchema.Type;
 export type AddUserFormValues = typeof AddUserFormSchema.Type;
+export type PageChunk = typeof PageChunkSchema.Type;

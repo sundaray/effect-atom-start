@@ -18,7 +18,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { deleteUserAtom } from "@/atoms/user";
+import { optimisticDeleteUserAtom } from "@/atoms/user";
 import type { User } from "@/schema/user-schema";
 
 interface UserDeleteDialogProps {
@@ -31,7 +31,9 @@ export function UserDeleteDialog({ user, trigger }: UserDeleteDialogProps) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const deleteUser = useAtomSet(deleteUserAtom, { mode: "promiseExit" });
+  const deleteUser = useAtomSet(optimisticDeleteUserAtom, {
+    mode: "promiseExit",
+  });
 
   function handleOpenChange(isOpen: boolean) {
     setOpen(isOpen);
@@ -43,6 +45,9 @@ export function UserDeleteDialog({ user, trigger }: UserDeleteDialogProps) {
   async function handleDelete() {
     setIsDeleting(true);
     setError(null);
+
+    // Close dialog immediately — optimistic update happens at atom level
+    setOpen(false);
 
     const exit = await deleteUser(user.id);
 
@@ -59,6 +64,9 @@ export function UserDeleteDialog({ user, trigger }: UserDeleteDialogProps) {
         ? failureOption.value.message
         : "An unexpected error occurred";
       setError(errorMessage);
+      toast.error(`Failed to delete ${user.firstName} ${user.lastName}`, {
+        description: errorMessage,
+      });
     }
   }
 

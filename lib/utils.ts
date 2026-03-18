@@ -1,4 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
+import { Effect } from "effect";
+import { AsyncResult, Atom, AtomRegistry } from "effect/unstable/reactivity";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -31,4 +33,13 @@ export function getErrorInfo(error: unknown): ErrorInfo {
     error instanceof Error ? error.message : "An unexpected error occurred";
 
   return { title, message };
+}
+
+export function prefetch<A, E>(
+  registry: AtomRegistry.AtomRegistry,
+  atom: Atom.Atom<AsyncResult.AsyncResult<A, E>>,
+) {
+  return Effect.runPromise(
+    AtomRegistry.getResult(registry, atom, { suspendOnWaiting: true }),
+  );
 }

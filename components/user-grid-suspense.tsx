@@ -17,11 +17,11 @@ import { UserSuccessCard } from "@/components/user-success-card";
 import { getErrorInfo } from "@/lib/utils";
 import { pageAtom } from "@/atoms/page";
 import { debouncedSearchQueryAtom } from "@/atoms/search";
-import { usersAtom } from "@/atoms/user";
+import { optimisticUsersAtom } from "@/atoms/user";
 
 export function UserGridSuspense() {
-  const result = useAtomSuspense(usersAtom, { includeFailure: true });
-  const refresh = useAtomRefresh(usersAtom);
+  const result = useAtomSuspense(optimisticUsersAtom, { includeFailure: true });
+  const refresh = useAtomRefresh(optimisticUsersAtom);
   const searchQuery = useAtomValue(debouncedSearchQueryAtom);
   const page = useAtomValue(pageAtom);
 
@@ -32,7 +32,7 @@ export function UserGridSuspense() {
     return <FailureCard title={title} message={message} onRetry={refresh} />;
   }
 
-  const users = result.value.users;
+  const users = result.value.items.flatMap((page) => page.users);
 
   if (users.length === 0) {
     const reason = getNoUsersFoundReason(users, searchQuery, page);
@@ -46,7 +46,7 @@ export function UserGridSuspense() {
 
   return (
     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      {result.value.users.map((user) => (
+      {users.map((user) => (
         <UserSuccessCard key={user.id} user={user} waiting={result.waiting} />
       ))}
     </div>

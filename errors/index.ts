@@ -1,20 +1,33 @@
-import { Data } from "effect";
+import { Schema } from "effect";
 
-export class ClientError extends Data.TaggedError("ClientError")<{
-  message: string;
-  cause: unknown;
-}> {}
+export class ClientError extends Schema.TaggedErrorClass<ClientError>()(
+  "ClientError",
+  {
+    message: Schema.String,
+    cause: Schema.Defect,
+  },
+) {}
 
-export class ServerError extends Data.TaggedError("ServerError")<{
-  message: string;
-  cause: unknown;
-}> {}
+export class ServerError extends Schema.TaggedErrorClass<ServerError>()(
+  "ServerError",
+  {
+    message: Schema.String,
+    cause: Schema.Defect,
+  },
+) {}
 
-export class ParseError extends Data.TaggedError("ParseError")<{
-  message: string;
-  cause: unknown;
-}> {}
+export class ParseError extends Schema.TaggedErrorClass<ParseError>()(
+  "ParseError",
+  {
+    message: Schema.String,
+    cause: Schema.Defect,
+  },
+) {}
+
+export const HttpErrorSchema = Schema.Union([
+  ClientError,
+  ServerError,
+  ParseError,
+]);
 
 export type HttpError = ClientError | ServerError | ParseError;
-
-export type UserServiceError = HttpError;
