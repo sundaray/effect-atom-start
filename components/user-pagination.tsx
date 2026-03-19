@@ -8,14 +8,22 @@ import { Button } from "@/components/ui/button";
 
 import { USERS_PER_PAGE } from "@/lib/constants";
 import { pageAtom } from "@/atoms/page";
-import { usersAtom } from "@/atoms/user";
+import { currentUsersAtom } from "@/atoms/user";
 
-const selectUsersCount = (result: Atom.Type<typeof usersAtom>) =>
+const selectUsersCount = (result: Atom.Type<typeof currentUsersAtom>) =>
   AsyncResult.map(result, (data) => data.usersCount);
 
-export function UserPagination() {
-  const [page, setPage] = useAtom(pageAtom);
-  const usersCountResult = useAtomValue(usersAtom, selectUsersCount);
+interface UserPaginationProps {
+  pageStateAtom: typeof pageAtom;
+  usersStateAtom: typeof currentUsersAtom;
+}
+
+export function UserPagination({
+  pageStateAtom,
+  usersStateAtom,
+}: UserPaginationProps) {
+  const [page, setPage] = useAtom(pageStateAtom);
+  const usersCountResult = useAtomValue(usersStateAtom, selectUsersCount);
 
   return AsyncResult.match(usersCountResult, {
     onInitial: () => null,

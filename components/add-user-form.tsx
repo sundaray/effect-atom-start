@@ -2,7 +2,7 @@
 
 import { startTransition, useId, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAtomRefresh, useAtomSet } from "@effect/atom-react";
+import { useAtomSet } from "@effect/atom-react";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { Cause, Exit, Option } from "effect";
 import { useForm } from "react-hook-form";
@@ -19,7 +19,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-import { addUserAtom, usersAtom } from "@/atoms/user";
+import { addUserAtom, invalidateUsersAtom } from "@/atoms/user";
 import {
   AddUserFormStandardSchema,
   type AddUserFormValues,
@@ -33,7 +33,7 @@ export function AddUserForm() {
   const [globalError, setGlobalError] = useState<string | null>(null);
 
   const addUser = useAtomSet(addUserAtom, { mode: "promiseExit" });
-  const refreshUsers = useAtomRefresh(usersAtom);
+  const invalidateUsers = useAtomSet(invalidateUsersAtom, { mode: "promise" });
 
   const {
     register,
@@ -57,7 +57,7 @@ export function AddUserForm() {
 
     if (Exit.isSuccess(exit)) {
       const user = exit.value;
-      refreshUsers();
+      await invalidateUsers(undefined);
       toast.success("User Added Successfully", {
         description: `${user.firstName} ${user.lastName} was added successfully.`,
       });

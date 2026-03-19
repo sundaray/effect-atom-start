@@ -5,6 +5,8 @@ import { atomRuntime } from "@/atom-runtime";
 import { pageAtom } from "@/atoms/page";
 import { debouncedSearchQueryAtom } from "@/atoms/search";
 import {
+  UserAddressAsyncResultSchema,
+  UserBasicAsyncResultSchema,
   UsersResponseAsyncResultSchema,
   type AddUserFormValues,
 } from "@/schema/user-schema";
@@ -68,6 +70,42 @@ export const userAtom = Atom.family((id: string) => {
 
   return typeof window !== "undefined" ? Atom.refreshOnWindowFocus(base) : base;
 });
+
+// ============ User Basic Atom ============
+export const userBasicAtom = Atom.family((id: string) =>
+  atomRuntime
+    .atom(
+      Effect.gen(function* () {
+        const userService = yield* UserService;
+        return yield* userService.getUserBasic(id);
+      }),
+    )
+    .pipe(
+      Atom.serializable({
+        key: `user-basic:${id}`,
+        schema: UserBasicAsyncResultSchema,
+      }),
+      Atom.setIdleTTL(Duration.hours(1)),
+    ),
+);
+
+// ============ User Address Atom ============
+export const userAddressAtom = Atom.family((id: string) =>
+  atomRuntime
+    .atom(
+      Effect.gen(function* () {
+        const userService = yield* UserService;
+        return yield* userService.getUserAddress(id);
+      }),
+    )
+    .pipe(
+      Atom.serializable({
+        key: `user-address:${id}`,
+        schema: UserAddressAsyncResultSchema,
+      }),
+      Atom.setIdleTTL(Duration.hours(1)),
+    ),
+);
 
 // ============ Delete User Atom ============
 export const deleteUserAtom = atomRuntime.fn(

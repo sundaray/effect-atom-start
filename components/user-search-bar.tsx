@@ -9,9 +9,17 @@ import { Input } from "@/components/ui/input";
 import { pageAtom } from "@/atoms/page";
 import { searchQueryAtom } from "@/atoms/search";
 
-export function UserSearchBar() {
-  const [query, setQuery] = useAtom(searchQueryAtom);
-  const setPage = useAtomSet(pageAtom);
+interface UserSearchBarProps {
+  pageStateAtom: typeof pageAtom;
+  searchStateAtom: typeof searchQueryAtom;
+}
+
+export function UserSearchBar({
+  pageStateAtom,
+  searchStateAtom,
+}: UserSearchBarProps) {
+  const [query, setQuery] = useAtom(searchStateAtom);
+  const setPage = useAtomSet(pageStateAtom);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setQuery(e.target.value);

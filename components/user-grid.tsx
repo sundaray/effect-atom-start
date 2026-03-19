@@ -8,19 +8,20 @@ import { UserEmptyCard } from "@/components/user-empty-card";
 import { UserGridSpinner } from "@/components/user-grid-spinner";
 import { UserSuccessCard } from "@/components/user-success-card";
 
-import { usersAtom } from "@/atoms/user";
+import { currentUsersAtom } from "@/atoms/user";
 
-// const selectUsers = (result: Atom.Type<typeof usersAtom>) =>
-//   AsyncResult.map(result, (data) => data.users);
+const selectUsers = (result: Atom.Type<typeof currentUsersAtom>) =>
+  AsyncResult.map(result, (data) => data.users);
 
-export function UserGrid({ usersStateAtom }) {
-  const usersResult = useAtomValue(usersStateAtom);
+interface UserGridProps {
+  usersStateAtom: typeof currentUsersAtom;
+}
+
+export function UserGrid({ usersStateAtom }: UserGridProps) {
+  const usersResult = useAtomValue(usersStateAtom, selectUsers);
 
   return AsyncResult.builder(usersResult)
     .onInitial(() => <UserGridSpinner />)
-    .onErrorTag("ConfigError", (error) => (
-      <FailureCard title="Configuration Error" message={error.message} />
-    ))
     .onErrorTag("ClientError", (error) => (
       <FailureCard title="Client Error" message={error.message} />
     ))

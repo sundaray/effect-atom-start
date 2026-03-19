@@ -1,14 +1,19 @@
 import { Icons } from "@/components/icons";
 
 import { cn } from "@/lib/utils";
-import type { User } from "@/schema/user-schema";
+import type { UserBasic } from "@/schema/user-schema";
 
 interface UserDetailsCardProps {
-  user: User;
+  user: UserBasic;
+  addressContent: React.ReactNode;
   waiting?: boolean;
 }
 
-export function UserDetailsCard({ user, waiting }: UserDetailsCardProps) {
+export function UserDetailsCard({
+  user,
+  addressContent,
+  waiting,
+}: UserDetailsCardProps) {
   return (
     <div className="relative container flex max-w-md flex-col justify-between gap-6 border bg-white p-6">
       <div
@@ -27,12 +32,7 @@ export function UserDetailsCard({ user, waiting }: UserDetailsCardProps) {
 
       <div className="flex items-start gap-3 border bg-neutral-50 p-3">
         <Icons.mapPin className="mt-0.5 size-5 shrink-0 text-neutral-400" />
-        <div className="text-sm text-neutral-600">
-          <p>{user.address.address}</p>
-          <p>
-            {user.address.city}, {user.address.state}
-          </p>
-        </div>
+        <div className="text-sm text-neutral-600">{addressContent}</div>
       </div>
     </div>
   );

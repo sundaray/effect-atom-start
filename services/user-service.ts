@@ -11,11 +11,14 @@ import { USERS_PER_PAGE } from "@/lib/constants";
 import { mapHttpError } from "@/lib/http-error";
 import { ParseError, type HttpError } from "@/errors";
 import {
+  UserBasicSchema,
   UserSchema,
   UsersSchema,
   type AddUserFormValues,
   type PageChunk,
   type User,
+  type UserAddress,
+  type UserBasic,
   type UsersResponse,
 } from "@/schema/user-schema";
 
@@ -103,6 +106,47 @@ export class UserService extends ServiceMap.Service<UserService>()(
         );
       }
 
+      // ============ Get User Basic ============
+      function getUserBasic(id: string): Effect.Effect<UserBasic, HttpError> {
+        return client.get(`${apiBaseUrl}/users/${id}`).pipe(
+          Effect.delay("1 second"),
+          Effect.flatMap(HttpClientResponse.schemaBodyJson(UserBasicSchema)),
+          Effect.catchTag("HttpClientError", (error) =>
+            Effect.fail(mapHttpError(error)),
+          ),
+          Effect.catchTag("SchemaError", (error) =>
+            Effect.fail(
+              new ParseError({
+                message: "Received an unexpected response from the server.",
+                cause: error,
+              }),
+            ),
+          ),
+        );
+      }
+
+      // ============ Get User Address ============
+      function getUserAddress(
+        id: string,
+      ): Effect.Effect<UserAddress, HttpError> {
+        return client.get(`${apiBaseUrl}/users/${id}`).pipe(
+          Effect.delay("2 seconds"),
+          Effect.flatMap(HttpClientResponse.schemaBodyJson(UserSchema)),
+          Effect.map((user) => user.address),
+          Effect.catchTag("HttpClientError", (error) =>
+            Effect.fail(mapHttpError(error)),
+          ),
+          Effect.catchTag("SchemaError", (error) =>
+            Effect.fail(
+              new ParseError({
+                message: "Received an unexpected response from the server.",
+                cause: error,
+              }),
+            ),
+          ),
+        );
+      }
+
       // ============ Delete User ============
       function deleteUser(userId: string): Effect.Effect<void, HttpError> {
         return client.del(`${apiBaseUrl}/usersx/${userId}`).pipe(
@@ -137,7 +181,15 @@ export class UserService extends ServiceMap.Service<UserService>()(
         );
       }
 
-      return { getUsers, getUsersStream, getUser, deleteUser, addUser };
+      return {
+        getUsers,
+        getUsersStream,
+        getUser,
+        deleteUser,
+        addUser,
+        getUserBasic,
+        getUserAddress,
+      };
     }),
   },
 ) {

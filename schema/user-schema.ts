@@ -19,6 +19,33 @@ export const UserSchema = Schema.Struct({
   }),
 });
 
+export const UserBasicSchema = Schema.Struct({
+  id: Schema.String,
+  firstName: Schema.String,
+  lastName: Schema.String,
+  email: Schema.String,
+  company: Schema.Struct({
+    name: Schema.String,
+    title: Schema.String,
+  }),
+});
+
+export const UserAddressSchema = Schema.Struct({
+  address: Schema.String,
+  city: Schema.String,
+  state: Schema.String,
+});
+
+export const UserBasicAsyncResultSchema = AsyncResult.Schema({
+  success: UserBasicSchema,
+  error: HttpErrorSchema,
+});
+
+export const UserAddressAsyncResultSchema = AsyncResult.Schema({
+  success: UserAddressSchema,
+  error: HttpErrorSchema,
+});
+
 function requiredString(message: string) {
   return Schema.String.check(Schema.isNonEmpty({ message }));
 }
@@ -67,6 +94,8 @@ export const PageChunkSchema = Schema.Struct({
 
 // Derive TypeScript types from schemas
 export type User = typeof UserSchema.Type;
+export type UserBasic = typeof UserBasicSchema.Type;
+export type UserAddress = typeof UserAddressSchema.Type;
 export type UsersResponse = typeof UsersResponseSchema.Type;
 export type AddUserFormValues = typeof AddUserFormSchema.Type;
 export type PageChunk = typeof PageChunkSchema.Type;
